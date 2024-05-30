@@ -276,7 +276,7 @@
    </div>
 
          <div id="Noma" align="center" style="height: auto; left: 16px; position: absolute; top: 35px; width: 98%; display: none;">
-             <a class="extra close" style="float:right; position: absolute; right: 11px; top: 11px;" href="#" onclick="event.returnValue = false;  tinymce.execCommand('mceRemoveControl',true,'elm1'); $('#elm1').val(''); $( '#Noma' ).tabs( 'destroy' ); $('#Noma').hide(); return false;"></a>
+             <a class="extra close" style="float:right; position: absolute; right: 11px; top: 11px;" href="#" onclick="event.returnValue = false; $('#elm1').val(''); $( '#Noma' ).tabs( 'destroy' ); $('#Noma').hide(); return false;"></a>
                  <div class="main">
 
       <div class="clear"><!--  --></div>

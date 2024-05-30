@@ -258,49 +258,7 @@ VALUES (
         $Data['Banka'] = rawurldecode($Data['Banka']);
         $Data['Telefons'] = rawurldecode($Data['Telefons']);
 
-        if ($_SESSION['User']->getStatus() < 99) {
-            $Data['Rights'] = " mode : 'textareas',
-        theme : 'advanced',
-        fullscreen_new_window : true,
-         fullscreen_settings : {
-              theme_advanced_buttons1 : 'print,|,pagebreak,template,|,fullscreen',
-        },
-        plugins : 'pagebreak,save,print,template',
-        theme_advanced_buttons1 : 'save,print,|,pagebreak,template,|,fullscreen',
-        theme_advanced_buttons2 : '',
-        theme_advanced_buttons3 : '',
-        theme_advanced_buttons4 : '',
-        theme_advanced_toolbar_location : 'top',
-        theme_advanced_toolbar_align : 'left',
-        theme_advanced_statusbar_location : 'bottom',
-        theme_advanced_resizing : true,
-        template_external_list_url : '/js/noma_template_list.js',
-           ";
-        } else {
-            $Data['Rights'] =  '
-        mode : "textareas",
-        theme : "advanced",
-        fullscreen_new_window : true,
-         fullscreen_settings : {
-              theme_advanced_buttons1 : "newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-        },
-
-        plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,visualblocks",
-
-        // Theme options
-        theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-        theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-        theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
-        theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak,restoredraft,visualblocks",
-        theme_advanced_toolbar_location : "top",
-        theme_advanced_toolbar_align : "left",
-        theme_advanced_statusbar_location : "bottom",
-        theme_advanced_resizing : true,
-
-        // Drop lists for link/image/media/template dialogs
-        template_external_list_url : "/js/noma_template_list.js",
-        ';
-        }
+        $Data['Rights'] = "";
 
         return $Data;
     }

@@ -20,7 +20,6 @@
         </script>
         <script type="text/javascript" src="/js/jquery.ui.datepicker.js"></script>
 
-        <script type="text/javascript" src="/js/tiny_mce/tiny_mce.js"></script>
         <script type="text/javascript" src="/js/main.js"></script>
         <script type="text/javascript">
             function errorHandler(message, url, line) {
