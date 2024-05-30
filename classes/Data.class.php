@@ -395,7 +395,6 @@ class Data extends DBObject {
         while ($row = $result->fetch_assoc()) {
             if ($row['IDType'] == 61) $row['dblClick'] = 'getSupplier(this);';
 
-            if ($row['Noma'] == 1) $row['dblClick'] = 'MakeNoma(this);';
             if ($row['IDType'] == 72) $row['dblClick'] = 'getPavadzime(this);';
 
             if ($row['IDType'] == Config::Noliktava) $row['dblClick'] = "OpenForm('GetVeikals','DialogForm','scrollDiv','Prece','1500'," . $row['ID'] . ");";
@@ -584,7 +583,6 @@ class Data extends DBObject {
 
                 if ($row['IDType'] == 61) $row['dblClick'] = 'getSupplier(this);';
                 if ($row['IDType'] == 72) $row['dblClick'] = 'getPavadzime(this);';
-                if ($row['Noma'] == 1) $row['dblClick'] = 'MakeNoma(this);';
 
                 if ($row['IDType'] == Config::Noliktava) $row['dblClick'] = "OpenForm('GetVeikals','DialogForm','scrollDiv','Prece','1500'," . $row['ID'] . ");";
 
@@ -697,7 +695,6 @@ class Data extends DBObject {
 
             if ($row['IDType'] == 61) $row['dblClick'] = 'getSupplier(this);';
             if ($row['IDType'] == 72) $row['dblClick'] = 'getPavadzime(this);';
-            if ($row['Noma'] == 1) $row['dblClick'] = 'MakeNoma(this);';
 
             if ($row['IDType'] == Config::Noliktava) $row['dblClick'] = "OpenForm('GetVeikals','DialogForm','scrollDiv','Prece','1500'," . $row['ID'] . ");";
 
@@ -1366,7 +1363,6 @@ class Data extends DBObject {
 
         if ($row['IDType'] == 61) $row['dblClick'] = 'getSupplier(this);';
         if ($row['IDType'] == 72) $row['dblClick'] = 'getPavadzime(this);';
-        if ($row['Noma'] == 1) $row['dblClick'] = 'MakeNoma(this);';
 
         if ($row['IDType'] == Config::Noliktava) $row['dblClick'] = "OpenForm('GetVeikals','DialogForm','scrollDiv','Prece','1500'," . $row['ID'] . ");";
 

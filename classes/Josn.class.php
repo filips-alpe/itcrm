@@ -26,72 +26,6 @@ class Josn extends DBObject {
             case 'Noliktava':
                 $this->GetNoliktava($_GET['term']);
                 die;
-            case 'NomaLigums':
-                return $this->NomaLigums($_POST[ID]);
-            case 'NomaAkts':
-                return $this->NomaAkts($_POST[ID]);
-            case 'NomaPielikums':
-                return $this->NomaPielikums($_POST[ID]);
-            case 'OrginalLigums':
-                $Data = Noma::GetNoma($_POST[ID]);
-                print urldecode(Template::Process('/noma/OrginalLigums', $Data));
-                die;
-                // Nomas akti
-            case 'OrginalAkts':
-                $Data = Noma::GetNoma($_POST[ID]);
-                print urldecode(Template::Process('/noma/OrginalAkts', $Data));
-                die;
-            case 'R1273_Akts':
-                $Data = Noma::GetNoma($_POST[ID]);
-                print urldecode(Template::Process('/noma/R1273_Akts', $Data));
-                die;
-            case 'R0325_Akts':
-                $Data = Noma::GetNoma($_POST[ID]);
-                print urldecode(Template::Process('/noma/R0325_Akts', $Data));
-                die;
-            case 'R1955_Akts':
-                $Data = Noma::GetNoma($_POST[ID]);
-                print urldecode(Template::Process('/noma/R1955_Akts', $Data));
-                die;
-            case 'R1961_Akts':
-                $Data = Noma::GetNoma($_POST[ID]);
-                print urldecode(Template::Process('/noma/R1961_Akts', $Data));
-                die;
-            case 'R1766_Akts':
-                $Data = Noma::GetNoma($_POST[ID]);
-                print urldecode(Template::Process('/noma/R1766_Akts', $Data));
-                die;
-            case 'R1750_Akts':
-                $Data = Noma::GetNoma($_POST[ID]);
-                print urldecode(Template::Process('/noma/R1750_Akts', $Data));
-                die;
-            case 'R1920_Akts':
-                $Data = Noma::GetNoma($_POST[ID]);
-                print urldecode(Template::Process('/noma/R1920_Akts', $Data));
-                die;
-            case 'R1750_Akts':
-                $Data = Noma::GetNoma($_POST[ID]);
-                print urldecode(Template::Process('/noma/R1750_Akts', $Data));
-                die;
-            case 'R1751_Akts':
-                $Data = Noma::GetNoma($_POST[ID]);
-                print urldecode(Template::Process('/noma/R1751_Akts', $Data));
-                die;
-            case 'R1955_Akts':
-                $Data = Noma::GetNoma($_POST[ID]);
-                print urldecode(Template::Process('/noma/R1955_Akts', $Data));
-                die;
-            case 'R1966_Akts':
-                $Data = Noma::GetNoma($_POST[ID]);
-                print urldecode(Template::Process('/noma/R1955_Akts', $Data));
-                die;
-            case 'OrginalPielikums':
-                $Data = Noma::GetNoma($_POST[ID]);
-                print urldecode(Template::Process('/noma/OrginalPielikums', $Data));
-                die;
-            case 'NomaForm':
-                print Template::Process('/noma/NomaForm');
-                die;
             case 'EditSanemejs':
                 $Data['Dati'] = urldecode(Pavadzime::EditSanList());
                 print Template::Process('/Dialog/EditSanemejs', $Data);
@@ -111,28 +45,8 @@ class Josn extends DBObject {
             case 'NewSanemejs':
                 print urldecode(Template::Process('/Pavadzime/NewSanemejs', $Data));
                 die;
-            case 'NewAuto':
-                print urldecode(Template::Process('/noma/NewAuto', $Data));
-                die;
-            case 'EditAuto':
-                $Data['Dati'] = urldecode(Noma::EditAutoList());
-                print Template::Process('/noma/EditAutoList', $Data);
-                die;
-            case 'ChangeAuto':
-                $Data = Noma::ChangeAuto($_POST['ID']);
-                print urldecode(Template::Process('/noma/ChangeAuto', $Data));
-                die;
-            case 'AutoAutocomplite':
-                echo Noma::AutoAutocomplite($_GET['term']);
-                die;
-            case 'NomaOptions':
-                print Template::Process('/noma/Options', $Data);
-                die;
             case 'NrExist':
                 echo $this->NrExist($_GET['value']);
-                die;
-            case 'Pavadzime':
-                echo $this->Pavadzime($_POST['ID']);
                 die;
             case 'AddFiles':
                 $Data = Data::getRow($_POST['ID']);
@@ -301,51 +215,6 @@ class Josn extends DBObject {
         echo $Orders;
     }
 
-    function NomaLigums($ID) {
-        $Data = Noma::GetNoma($ID);
-        $query = "SELECT * FROM noma WHERE RowID =" . $ID;
-
-        if (!$result = self::$DB->query($query)) {
-            throw new Error('Read error on Josn (' . __LINE__ . ')');
-        }
-
-        $row = $result->fetch_assoc();
-
-        $Data['Ligums'] = urldecode($row['ligums']);
-        $Data['ID'] = $ID;
-        return Template::Process('/noma/ligums', $Data);
-    }
-
-    function NomaAkts($ID) {
-        $Data = Noma::GetNoma($ID);
-        $query = "SELECT * FROM noma WHERE RowID =" . $ID;
-
-        if (!$result = self::$DB->query($query)) {
-            throw new Error('Read error on Josn (' . __LINE__ . ')');
-        }
-
-        $row = $result->fetch_assoc();
-
-        $Data['Akts'] = urldecode($row['Akts']);
-        $Data['ID'] = $ID;
-        return Template::Process('/noma/Akts', $Data);
-    }
-
-    function NomaPielikums($ID) {
-        $Data = Noma::GetNoma($ID);
-        $query = "SELECT * FROM noma WHERE RowID =" . $ID;
-
-        if (!$result = self::$DB->query($query)) {
-            throw new Error('Read error on Josn (' . __LINE__ . ')');
-        }
-
-        $row = $result->fetch_assoc();
-
-        $Data['Pielikums'] = urldecode($row['Pielikums']);
-        $Data['ID'] = $ID;
-        return Template::Process('/noma/Pielikums', $Data);
-    }
-
     function NrExist($value) {
         $query = "SELECT * FROM `Data` WHERE IDType='72' AND IDDoc = '" . $value . "'";
 
@@ -358,12 +227,6 @@ class Josn extends DBObject {
         } else {
             return 1;
         }
-    }
-
-    function Pavadzime($ID) {
-        $Data['Data'] = $this->getList($ID);
-
-        return Template::Process('/noma/Pavadzime', $Data);
     }
 
     function getList($Data) {
