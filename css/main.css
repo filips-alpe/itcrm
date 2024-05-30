@@ -237,13 +237,6 @@ a.changes {
 a.close {
     background-position: center -85px;
 }
-a.print {
-    float: left;
-    width: 17px;
-    margin: 0 3px;
-    height: 17px;
-    background: URL(/images/Printer-icon.png) no-repeat;
-}
 a.image {
     background-image: url("/images/image.png");
     height: 19px;

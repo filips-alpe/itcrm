@@ -123,7 +123,6 @@ class Language {
         'Save' => 'Saglabāt',
         'Filter' => 'Atlasīt',
         'Close' => 'Aizvērt',
-        'Print' => 'Drukāt',
         'Export' => 'Ex',
         'All' => 'Visi',
         'Reminder' => 'Atgadinājumi',

@@ -1245,7 +1245,7 @@ function savetable() {
   }
 }
 
-function bildsave(print) {
+function bildsave() {
   a = savetable();
   if (a == 1) {
     if (!$("input.atlaidenr").val()) {
@@ -1289,18 +1289,6 @@ function bildsave(print) {
     Loading(0, 1);
     $.post(URL + "/Pavadzime/BildSave", data, success);
   }
-
-  if (print == 1) {
-    return 1;
-  }
-}
-
-function print() {
-  // a = bildsave(1);
-  //if (a == 1) {
-  var ID = $("input#pavadid").val();
-  window.open(URL + "/PavadzimePrints&ID=" + ID);
-  //}
 }
 
 function NextPage(rindask) {

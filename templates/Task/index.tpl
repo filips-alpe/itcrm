@@ -23,7 +23,7 @@
         userlists: TaskUsers,
         theme: true,
         header: {
-        left: 'prev,next today print',
+        left: 'prev,next today',
         center: 'title',
         right: 'month,agendaWeek,agendaDay'
         },

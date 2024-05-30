@@ -266,7 +266,6 @@
     <div class="main">
      <a class="right button" onclick="event.returnValue = false;  $('#pavadzime').hide(); return false;"> <span class= "ui-icon ui-icon-circle-close"> </span>[[:Close:]]</a>
      <a class="right button" href="javascript:bildsave()"><span class="ui-icon ui-icon-disk"> </span>[[:Save:]]</a>
-     <a class="right button" href="javascript:print()"><span class="ui-icon ui-icon-print"> </span>[[:Print:]]</a>
 
       <div class="clear"><!--  --></div>
       <div id="PDati">
