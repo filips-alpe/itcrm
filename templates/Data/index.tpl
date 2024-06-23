@@ -262,19 +262,6 @@
     </div>
    </div>
 
-      <div id="pavadzime" align="center" style="display: none;">
-    <div class="main">
-     <a class="right button" onclick="event.returnValue = false;  $('#pavadzime').hide(); return false;"> <span class= "ui-icon ui-icon-circle-close"> </span>[[:Close:]]</a>
-     <a class="right button" href="javascript:bildsave()"><span class="ui-icon ui-icon-disk"> </span>[[:Save:]]</a>
-
-      <div class="clear"><!--  --></div>
-      <div id="PDati">
-        [:Suppliers:]
-      </div>
-      <div class="clear"><!--  --></div>
-    </div>
-   </div>
-
     <div id="noliktava" align="center" style="display: none;">
         <div class="main">
 

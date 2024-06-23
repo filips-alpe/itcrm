@@ -997,117 +997,6 @@ function getSupplier(el) {
   $.post(URL + "/Info/Get", data, success);
 }
 
-function getPavadzime(el) {
-  ID = el.id.replace(/Data/, "");
-  var data = "IDData=" + ID;
-
-  success = function (answ) {
-    Loading(0, 0);
-    try {
-      answ = eval("(" + answ + ")");
-    } catch (ex) {
-      answ = new Array(answ);
-    }
-
-    if (answ[0] == 1) {
-      $("#PDati").html(answ[1]);
-      container = $("#scrollDiv");
-      $("#pavadzime").css(
-        "top",
-        $(el).offset().top -
-          container.offset().top +
-          $(el).height() +
-          container[0].scrollTop
-      );
-
-      $("#pavadzime").show();
-    } else alert(answ[0]);
-  };
-  Loading(0, 1);
-  $.post(URL + "/Pavadzime/Get", data, success);
-}
-
-function DelSan(ID) {
-  var data = "ID=" + ID;
-  success = function (answ) {
-    Loading(0, 0);
-    if (answ == 1) {
-      var Data = "0";
-      success = function (answ) {
-        Loading(0, 0);
-        answ = decodeURIComponent(answ);
-        $("div#EditSanList table.AutoTable tbody").html(answ);
-      };
-      Loading(0, 1);
-      $.post(URL + "/Pavadzime/EditSanList", Data, success);
-    } else {
-      alert(answ);
-    }
-  };
-
-  Loading(0, 1);
-  $.post(URL + "/Pavadzime/DelSan", data, success);
-}
-
-function saveInfo(IDS, IDD) {
-  var info = $("#Info" + IDS).val();
-  //var color = $('#Color'+IDS).val();
-
-  var data = "IDData=" + IDD + "&IDSupplier=" + IDS + "&Info=" + info;
-  //+'&Color='+color;
-
-  success = function (answ) {
-    Loading(0, 0);
-
-    if (answ == 1) {
-      el = $("#Supplier" + IDS + " .info");
-      el.html(info);
-      //el.parent().css('background',color);
-      //el.bind('click',function() { showInfo(this); });
-      //$('#Supplier'+IDS+' div.color_picker').hide();
-    } else alert(answ);
-  };
-  Loading(0, 1);
-  $.post(URL + "/Info/Save", data, success);
-}
-
-function editSupplier(el, id) {
-  f = $("#SupplierForm");
-  $("input[name=ID]", f).val(id);
-  $("input[name=Color]", f).val(el.style.backgroundColor);
-  $("input[name=Name]", f).val($("b", el).html());
-  $("input[name=Description]", f).val($("span", el).html());
-  $("input[name=Reset]", f).show();
-  $("a", f).show();
-  //$('a',f).show();
-  $("div.color_picker", f).css("background-color", el.style.backgroundColor);
-}
-
-function editInfo(IDS, IDD) {
-  el = $("#Supplier" + IDS + " .info");
-  $("#Supplier" + IDS + " a")
-    .removeClass("edit")
-    .addClass("restore")
-    .attr("href", "javascript:saveInfo(" + IDS + "," + IDD + ");");
-  el.html("");
-  el.attr("onclick", "");
-  el.unbind("click");
-  $("#Info" + IDS).focus();
-  $("#Supplier" + IDS + " div.color_picker").show();
-}
-
-function showInfo(el, cls) {
-  if (typeof cls == "undefined") cls = "over";
-
-  if ($(el).hasClass(cls)) {
-    $(el).removeClass(cls);
-    $(el).parent().css("z-index", "10");
-  } else {
-    $(el).addClass(cls);
-    $(el).parent().css("z-index", "900");
-  }
-}
-
 function filterSuppliers(str) {
   sups = $("#Suppliers .supplier");
 
@@ -1201,88 +1090,6 @@ function getFilterData(id) {
   $.post(URL + "/Filters/Get", "ID=" + id, success);
 }
 
-function savetable() {
-  var rinda = $("#Preces tr:last.bordersolidadd").attr("id");
-  var i = 1;
-  for (i = 1; i <= rinda; i++) {
-    var entry = $("#Preces tr:last.bordersolidadd").attr("name");
-
-    var data =
-      "summa=" +
-      $("td:last.Summa").text() +
-      "&entryid=" +
-      entry +
-      "&id=" +
-      $("input#pavadid").val() +
-      "&nosaukums=" +
-      $("tr:last.bordersolidadd>td>input.Precu_nosaukums").val() +
-      "&artikuls=" +
-      $("tr:last.bordersolidadd>td>input.Artikuls").val() +
-      "&daudzums=" +
-      $("tr:last.bordersolidadd>td>input.Daudz").val() +
-      "&mervieniba=" +
-      $("tr:last.bordersolidadd>td>input.Merv").val() +
-      "&cena=" +
-      $("tr:last.bordersolidadd>td>input.Cena").val();
-    success = function (answ) {
-      Loading(0, 0);
-    };
-
-    Loading(0, 1);
-    $.post(URL + "/Pavadzime/LineSave", data, success);
-    $("#Preces tr:last.bordersolidadd").remove();
-    if (i == rinda) {
-      return 1;
-    }
-  }
-}
-
-function bildsave() {
-  a = savetable();
-  if (a == 1) {
-    if (!$("input.atlaidenr").val()) {
-      a = 0;
-    } else {
-      a = $("input.atlaidenr").val();
-    }
-    var data =
-      "ID=" +
-      $("input#Saveid").val() +
-      "&samaksaskartiba=" +
-      $("input.SamKart").val() +
-      "&Sanemejs=" +
-      encodeURIComponent($("input#Sanemejs").val()) +
-      "&pavadid=" +
-      $("input#pavadid").val() +
-      "&Atlaide=" +
-      a +
-      "&izsniedza=" +
-      $("input.izsniedz").val() +
-      "&Kopa=" +
-      $("td#Kop").text() +
-      "&atlaidessumma=" +
-      $("td#atlaide").text() +
-      "&PirmsNodokliem=" +
-      $("td#sumaatlaide").text() +
-      "&PVN=" +
-      $("td#PVN").text() +
-      "&Samaksai=" +
-      $("td#PavisamSamaksai").text() +
-      "&SanemejaID=" +
-      $("input#SanemejsID").val();
-    success = function (answ) {
-      Loading(0, 0);
-      if (answ == 1) {
-        history.go(0);
-        return 1;
-      }
-    };
-
-    Loading(0, 1);
-    $.post(URL + "/Pavadzime/BildSave", data, success);
-  }
-}
-
 function NextPage(rindask) {
   var data = "lapa=" + rindask;
   success = function (answ) {
@@ -1303,52 +1110,6 @@ function InPage(sk) {
 
   Loading(0, 1);
   $.post(URL + "/Data/Pagesk", data, success);
-}
-
-function summ(a) {
-  var celuzDaudz = "#Preces tbody>tr#" + a + ".bordersolidadd>td>input.Daudz";
-  var celuzCena = "#Preces tbody>tr#" + a + ".bordersolidadd>td>input.Cena";
-  var celuzSumma = "#Preces tbody>tr#" + a + ".bordersolidadd>td.Summa";
-  var Daudz = $(celuzDaudz).val();
-  var Cena = $(celuzCena).val();
-  var summa = r4(Cena * Daudz);
-  var atlaide1 = $("#Preces tbody>tr>td>input.atlaidenr").val();
-  var atlaide = "0." + atlaide1 + "";
-  $(celuzSumma).html(summa);
-  $("#Preces tbody>tr.bordersolid>td#Kop").html(
-    r4(sumOfColumns("Preces", 6, true))
-  );
-
-  $("#Preces tbody>tr>td#atlaide.bordersolid").html(
-    r2(sumOfColumns("Preces", 6, true) * atlaide)
-  );
-
-  $("#Preces tbody>tr>td#sumaatlaide.bordersolid").html(
-    r2(
-      sumOfColumns("Preces", 6, true) -
-        sumOfColumns("Preces", 6, true) * atlaide
-    )
-  );
-  $("#Preces tbody>tr>td#PVN.bordersolid").html(
-    r2(sumOfColumns("Preces", 6, true) * 0.0)
-  );
-  $("#Preces tbody>tr>td#PavisamSamaksai.bordersolid").html(
-    r2(
-      sumOfColumns("Preces", 6, true) -
-        sumOfColumns("Preces", 6, true) * atlaide +
-        sumOfColumns("Preces", 6, true) * 0.0
-    )
-  );
-}
-
-function sumOfColumns(tableID, columnIndex, hasHeader) {
-  var tot = parseFloat(0.0);
-  $("#" + tableID + " tr" + (hasHeader ? ":gt(0)" : ""))
-    .children("td:nth-child(" + columnIndex + ")")
-    .each(function () {
-      tot += parseFloat($(this).html());
-    });
-  return tot;
 }
 
 function editbox(status, el) {
@@ -1764,36 +1525,6 @@ function showMe(it, box) {
   document.getElementById(it).style.display = vis;
 }
 
-function CechNrExist(Object) {
-  var value = Object.value;
-  if (value == "") {
-    alert("Līguma numurs nav ievadīts!");
-    $("#AddDataForm #pprNr").val("");
-    $("#AddDataForm #pprNr").css("background-color", "red");
-    $("#AddDataForm #pprNr").focus();
-    return false;
-  }
-  $.ajax({
-    url: "/lv/Josn/NrExist",
-    data: {
-      value: value,
-    },
-    success: function (data) {
-      if (data == 1) {
-        $("#AddDataForm #pprNr").css("background-color", "white");
-
-        $("#AddDataForm [name=IDDoc]").val($("#AddDataForm #pprNr").val());
-        $("#AddDataForm #LigumaNr").val($("#AddDataForm #pprNr").val());
-      } else {
-        alert("Šāds Numurs jau eksistē");
-        $("#AddDataForm #pprNr").val("");
-        $("#AddDataForm #pprNr").css("background-color", "red");
-        $("#AddDataForm #pprNr").focus();
-      }
-    },
-  });
-}
-
 function clerDetalas() {
   var ID = $("#MatrealsForm #rindasID").val();
   var Obj = $("tr#Data" + ID + ".Data");
@@ -2053,7 +1784,6 @@ function OpenForm(Name, Blok, ParentBlok, nosaukums, Platums, ID, Save) {
 
   if (Save > 0) {
     myButtons["Save"] = function () {
-      DialogSave(Name, ID);
       $(this).dialog("close");
       $("#" + Blok + "").html(data);
     };
@@ -2077,43 +1807,6 @@ function OpenForm(Name, Blok, ParentBlok, nosaukums, Platums, ID, Save) {
     },
   });
   Loading(0, 0);
-}
-
-function DialogSave(Name, ID) {
-  if (Name == "AddSanemejs") {
-    EditSan();
-  }
-  if (Name == "NewSanemejs") {
-    AddSan();
-  }
-}
-
-function EditSan() {
-  var data = $("Form#ChangeSanemejs").serialize();
-  success = function (answ) {
-    Loading(0, 0);
-    $("DIV#AddDialog").remove();
-    $.ajax({
-      type: "POST",
-      cache: false,
-      url: "/lv/Josn/EditSanemejs",
-      success: function (data) {
-        $("#DialogForm").html(data);
-      },
-    });
-  };
-
-  Loading(0, 1);
-  $.post(URL + "/Pavadzime/Sanemejsedit", data, success);
-}
-
-function AddSan() {
-  var data = $("Form#ChangeSanemejs").serialize();
-  success = function (answ) {
-    Loading(0, 0);
-  };
-  Loading(0, 1);
-  $.post(URL + "/Pavadzime/SanemejsSave", data, success);
 }
 
 function HTMLFilter(selector, query) {

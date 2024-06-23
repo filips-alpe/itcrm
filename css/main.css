@@ -523,12 +523,6 @@ a.reminder {
     background: #fff;
 }
 
-#pavadzime {
-    width: 100%;
-    position: absolute;
-    display: none;
-    left: 0px;
-}
 #info .main {
     width: 98%;
     border: 5px solid #ddd;
@@ -540,11 +534,6 @@ a.reminder {
     position: absolute;
     display: none;
     left: 0px;
-}
-#pavadzime .main {
-    width: 98%;
-    border: 5px solid #ddd;
-    background: #fff;
 }
 
 #info .supplier {
@@ -624,18 +613,6 @@ a.reminder {
 }
 #info .supplier .supOver textarea {
     display: block;
-}
-
-#Pavadzime {
-    width: 100%;
-    position: absolute;
-    display: none;
-    left: 0px;
-}
-#Pavadzime .main {
-    width: 98%;
-    border: 5px solid #ddd;
-    background: #fff;
 }
 
 .addbutton {
