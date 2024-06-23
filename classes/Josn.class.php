@@ -11,9 +11,6 @@ class Josn extends DBObject {
             case 'FilterTypes':
                 $this->GetFilterTypes($_GET['term']);
                 die;
-            case 'Groups':
-                $this->GetGroups($_GET['term']);
-                die;
             case 'Persons':
                 $this->GetPersons($_GET['term']);
                 die;
@@ -22,17 +19,6 @@ class Josn extends DBObject {
                 die;
             case 'Orders':
                 $this->GetOrders($_GET['term']);
-                die;
-            case 'Noliktava':
-                $this->GetNoliktava($_GET['term']);
-                die;
-            case 'GetVeikals':
-                $Data = Data::noliktavaDialog($_POST['ID']);
-                print Template::Process('/Dialog/GetVeikals', $Data);
-                die;
-            case 'PrecuGrupas':
-                $Data['PrecuGrupas'] = Data::PrecuGrupas($_POST['ID']);
-                print Template::Process('/Dialog/PrecuGrupas', $Data);
                 die;
             case 'AddFiles':
                 $Data = Data::getRow($_POST['ID']);
@@ -122,22 +108,6 @@ class Josn extends DBObject {
         echo str_replace("Code", "label", $Type);
     }
 
-    function GetGroups($code) {
-        $code = substr(strrchr(", " . $code, ', '), 2);
-        $query = "SELECT id as ID, title as label FROM `groups_linear` WHERE title LIKE '%" . $code . "%'
-                   ORDER BY `iorder` LIMIT 0,30";
-        if (!$result = self::$DB->query($query)) {
-            throw new Error('Read error on Josn (' . __LINE__ . ')');
-        }
-        $Type = array();
-        while ($row = $result->fetch_assoc()) {
-            $Type[] = $row;
-        }
-
-        $Type = json_encode($Type);
-        echo $Type;
-    }
-
     function GetPersons($code) {
         $code = substr(strrchr(", " . $code, ', '), 2);
         $query = "SELECT ID, Login FROM `Users` WHERE Login LIKE '" . $code . "%' AND `Status` > 0
@@ -184,21 +154,6 @@ class Josn extends DBObject {
 
         $Orders = json_encode($Orders);
         echo str_replace("Code", "label", $Orders);
-    }
-
-    function GetNoliktava($code) {
-        $query = "SELECT ID, PlaceTaken AS label FROM `Data` WHERE IDType='" . Config::Noliktava . "' AND PlaceTaken LIKE '" . $code . "%' AND `Status`=1
-                   ORDER BY `PlaceTaken` LIMIT 0,20";
-        if (!$result = self::$DB->query($query)) {
-            throw new Error('Read error on Josn (' . __LINE__ . ')');
-        }
-        $Noliktava = array();
-        while ($row = $result->fetch_assoc()) {
-            $Noliktava[] = $row;
-        }
-
-        $Orders = json_encode($Noliktava);
-        echo $Orders;
     }
 
     /**

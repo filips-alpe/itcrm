@@ -30,19 +30,6 @@
   [:Login:]: <a class="menu Logout" href="[:URL:]/Logout">[[:Logout:]]</a>
 </div>
 
-<!-- <ul class="DropMenu">
-        <li><a class="ui-button-text" href="#">Ievade</a></li>
-        <li><a class="ui-button-text" href="#">Noliktava</a></li>
-        <li>
-            <a class="ui-button-text" href="#">Opcijas</a>
-             <ul class="subnav">
-                <li ><a class="ui-button-text" href="#">Sub Nav Link</a></li>
-                <li><a class="ui-button-text"  href="#">Sub Nav Link</a></li>
-            </ul>
-        </li>
-
-    </ul> -->
-
 <a class="menu" href="[:URL:]/Data">[[:Data:]]</a>
 <a class="menu" href="[:URL:]/Users">[[:Users:]]</a>
 <a class="menu" href="[:URL:]/Types">[[:Types:]]</a>
@@ -50,4 +37,3 @@
 <a class="menu" style="display:[:NoAdmin:]" href="[:URL:]/Filters">[[:Filters:]]</a>
 <a class="menu" href="[:URL:]/Rights">[[:Rights:]]</a>
 <a class="menu" href="[:URL:]/Task">[[:Tasks:]]</a>
-<a class="menu" href="[:URL:]/Warehous">[[:Warehous:]]</a>

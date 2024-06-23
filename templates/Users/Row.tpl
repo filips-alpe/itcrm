@@ -9,7 +9,6 @@
     <td class="[:RowClass:][:add_r_bilde:]" >[:add_r_bilde:]</td>
     <td class="[:RowClass:][:add_files:]" >[:add_files:]</td>
     <td class="[:RowClass:][:OneDay:]" >[:OneDay:]</td>
-    <td class="[:RowClass:][:noliktava:]" >[:noliktava:]</td>
     <td class="[:RowClass:][:MultiChange:]" >[:MultiChange:]</td>
     <td class="[:RowClass:][:DelFile:]" >[:DelFile:]</td>
     <td class="[:NoAdmin:]">

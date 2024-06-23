@@ -41,12 +41,6 @@ class Data extends DBObject {
             case 'Page':
                 $_SESSION['page'] = $_POST['lapa'];
                 return "1";
-            case 'FormSave':
-                $ID =  $this->FormSave();
-                if (is_numeric($ID)) {
-                    $Data = $this->getRow($ID);
-                    return self::ArrayToJson(array(1, Template::Process('Row', $Data), $ID));
-                } else return $ID;
             case 'Pagesk':
                 $_SESSION['pagecount'] = $_POST['sk'];
                 return "1";
@@ -54,15 +48,6 @@ class Data extends DBObject {
                 return $this->Open(self::$url[3]);
             case 'AddAllSelected':
                 return $this->AddAllSelected();
-            case 'noliktava':
-                return $this->noliktava_exist($_POST['DetalasID']);
-            case 'NoliktavaAtlikums':
-                return json_encode($this->noliktava_atlikums($_POST['ID']));
-            case 'SaveDetala':
-                return  $this->SaveDetala($_POST);
-            case 'NoliktavaSave':
-                $this->NoliktavaSave($_POST);
-                break;
             case 'GetTpl':
                 $Data = $this->getRow($_POST['ID']);
                 $Data[0] = 1;
@@ -116,8 +101,6 @@ class Data extends DBObject {
                 return $Data->Delete();
             case 'Export':
                 return $this->Export();
-            case 'HTMLGrupas':
-                return $this->HTMLGrupas($_POST['ID'], $_POST['form']);
             case 'Changes':
                 return $this->getChangeList($_POST['ID']);
             case 'Sort':
@@ -392,13 +375,6 @@ class Data extends DBObject {
         while ($row = $result->fetch_assoc()) {
             if ($row['IDType'] == 61) $row['dblClick'] = 'getSupplier(this);';
 
-            if ($row['IDType'] == Config::Noliktava) $row['dblClick'] = "OpenForm('GetVeikals','DialogForm','scrollDiv','Prece','1500'," . $row['ID'] . ");";
-
-            if ($row['IDType'] == Config::AddNoliktava) $row['dblClick'] = 'getNoliktava(this,1); addNoliktavaAutoComp();';
-            if ($row['IDType'] == Config::DelNoliktava) $row['dblClick'] = 'getNoliktava(this,2); addNoliktavaAutoComp();';
-            if ($row['IDType'] == Config::ReservNoliktava) $row['dblClick'] = 'getNoliktava(this,2); addNoliktavaAutoComp();';
-            if ($row['IDType'] == Config::ReturnNoliktava) $row['dblClick'] = 'getNoliktava(this,2); addNoliktavaAutoComp();';
-
             $row['Deleted'] = $row['Status'] != -1 ? 'hide' : '';
             $row['Status'] = $row['Status'] == -1 ? 'deleted' : '';
             $row['Changes'] = $row['Changes'] == '' ? 'hide' : '';
@@ -578,13 +554,6 @@ class Data extends DBObject {
 
                 if ($row['IDType'] == 61) $row['dblClick'] = 'getSupplier(this);';
 
-                if ($row['IDType'] == Config::Noliktava) $row['dblClick'] = "OpenForm('GetVeikals','DialogForm','scrollDiv','Prece','1500'," . $row['ID'] . ");";
-
-                if ($row['IDType'] == Config::AddNoliktava) $row['dblClick'] = 'getNoliktava(this,1); addNoliktavaAutoComp();';
-                if ($row['IDType'] == Config::DelNoliktava) $row['dblClick'] = 'getNoliktava(this,2); addNoliktavaAutoComp();';
-                if ($row['IDType'] == Config::ReservNoliktava) $row['dblClick'] = 'getNoliktava(this,2); addNoliktavaAutoComp();';
-                if ($row['IDType'] == Config::ReturnNoliktava) $row['dblClick'] = 'getNoliktava(this,2); addNoliktavaAutoComp();';
-
                 $row['Deleted'] = $row['Status'] != -1 ? 'hide' : '';
                 $row['Status'] = $row['Status'] == -1 ? 'deleted' : '';
                 $row['HiddenClass'] = $row['Hidden'] == 1 ? 'hidden' : '';
@@ -688,13 +657,6 @@ class Data extends DBObject {
             $i++;
 
             if ($row['IDType'] == 61) $row['dblClick'] = 'getSupplier(this);';
-
-            if ($row['IDType'] == Config::Noliktava) $row['dblClick'] = "OpenForm('GetVeikals','DialogForm','scrollDiv','Prece','1500'," . $row['ID'] . ");";
-
-            if ($row['IDType'] == Config::AddNoliktava) $row['dblClick'] = 'getNoliktava(this,1); addNoliktavaAutoComp();';
-            if ($row['IDType'] == Config::DelNoliktava) $row['dblClick'] = 'getNoliktava(this,2); addNoliktavaAutoComp();';
-            if ($row['IDType'] == Config::ReservNoliktava) $row['dblClick'] = 'getNoliktava(this,2); addNoliktavaAutoComp();';
-            if ($row['IDType'] == Config::ReturnNoliktava) $row['dblClick'] = 'getNoliktava(this,2); addNoliktavaAutoComp();';
 
             $row['Deleted'] = $row['Status'] != -1 ? 'hide' : '';
             $row['Status'] = $row['Status'] == -1 ? 'deleted' : '';
@@ -1124,8 +1086,6 @@ class Data extends DBObject {
     function Save() {
         $_POST = $this->clearDefaultValues($_POST);
 
-        $this->SaveNoliktava($_POST);
-
         $this->fetchObject($_POST);
         if (($this->getRemindDate() != '0000-00-00 00:00:00' && $this->getRemindDate() != '2000-00-00 00:00:00')
             && !is_numeric($this->getRemindTo())
@@ -1194,14 +1154,6 @@ class Data extends DBObject {
             $this->AdminEdit  = 0;
         }
 
-        if ($_POST[IDType] == Config::Noliktava) {
-            $res = $this->ceckArtikuls($_POST[PlaceTaken]);
-            if ($res == 1) {
-                return print "Vienadi artukuli.";
-            }
-            $this->setAdminEdit('1');
-        }
-
         $query = 'INSERT INTO `Data`
                      SET `IDDoc`="' . addslashes($this->getIDDoc()) . '",
                          `IDUser`=' . $_SESSION['User']->getID() . ',
@@ -1234,18 +1186,6 @@ class Data extends DBObject {
 
         $this->setID(self::$DB->insert_id);
 
-        $type = (int)$this->getIDType();
-        if ($type == Config::Noliktava) {
-            Warehous::AddNew($this->getID(), $this->getSum());
-        }
-
-        if ($type == Config::AddNoliktava || $type == Config::DelNoliktava || $type == Config::ReturnNoliktava || $type == Config::ReservNoliktava) {
-            $NolDat = array(
-                "rindasID" => $this->getID(), "detalasID" => $_POST['detalasID'], "daudzums" => $_POST['daudzums'], "order" => (int)$this->getIDOrder()
-            );
-
-            $this->NoliktavaSave($NolDat);
-        }
         return $this->getID();
     }
 
@@ -1288,12 +1228,6 @@ class Data extends DBObject {
         }
 
         $type = (int)$this->getIDType();
-
-        if ($type == Config::AddNoliktava || $type == Config::DelNoliktava || $type == Config::ReturnNoliktava || $type == Config::ReservNoliktava) {
-            $NolDat = array("rindasID" => $this->getID(), "detalasID" => $_POST['detalasID'], "daudzums" => $_POST['daudzums'], "order" => (int)$this->getIDOrder());
-
-            $this->NoliktavaSave($NolDat);
-        }
     }
 
     function Delete() {
@@ -1355,13 +1289,6 @@ class Data extends DBObject {
         $now = strtotime(date('Y-m-d H:i:00'));
 
         if ($row['IDType'] == 61) $row['dblClick'] = 'getSupplier(this);';
-
-        if ($row['IDType'] == Config::Noliktava) $row['dblClick'] = "OpenForm('GetVeikals','DialogForm','scrollDiv','Prece','1500'," . $row['ID'] . ");";
-
-        if ($row['IDType'] == Config::AddNoliktava) $row['dblClick'] = 'getNoliktava(this,1); addNoliktavaAutoComp();';
-        if ($row['IDType'] == Config::DelNoliktava) $row['dblClick'] = 'getNoliktava(this,2); addNoliktavaAutoComp();';
-        if ($row['IDType'] == Config::ReservNoliktava) $row['dblClick'] = 'getNoliktava(this,2); addNoliktavaAutoComp();';
-        if ($row['IDType'] == Config::ReturnNoliktava) $row['dblClick'] = 'getNoliktava(this,2); addNoliktavaAutoComp();';
 
         if (in_array($row['ID'], $_SESSION['CechedRow'])) {
             $row['checked'] = 'checked';
@@ -1655,193 +1582,6 @@ class Data extends DBObject {
         return $results;
     }
 
-    function NolByID($ID, $colum) {
-        $query = "SELECT " . $colum . " FROM `noliktava` WHERE rindasID=" . $ID;
-        if (!$result = self::$DB->query($query)) {
-            throw new Error('Read error on Data (' . __LINE__ . ')');
-        }
-
-        while ($row = $result->fetch_assoc()) {
-            $results = $row[$colum];
-        }
-        return $results;
-    }
-
-    function noliktava_exist($ID) {
-        $query = "SELECT ID AS SuperID, rindasID, detalasID, daudzums, Shop, ShopTitle, ShopDescription, ShopModelID, ShopCategoryID FROM noliktava WHERE rindasID='" . $ID . "'";
-
-        $result = self::$DB->query($query);
-        if ($result->num_rows == 0) {
-            $results = array();
-        } else {
-            $results = $result->fetch_assoc();
-            $daudzums = $results['daudzums'];
-            $rindasID = $results['rindasID'];
-            $detalasID = $results['detalasID'];
-            $results[daudzums] = $daudzums;
-            $results[rindasID] = $rindasID;
-            $results[detalasID] = $detalasID;
-        }
-
-        $query2 = "SELECT PriceNote as mervieniba, PlaceTaken as nosaukums, Hours, TotalPrice as atlikums, PlaceDone, Note, BookNote FROM Data WHERE ID='" . $detalasID . "'";
-        $result2 = self::$DB->query($query2);
-        $results2 = $result2->fetch_assoc();
-
-        $results = $results + $results2;
-        echo json_encode($results);
-    }
-
-    function noliktavaDialog($ID) {
-        $query = "SELECT ID AS SuperID, rindasID, detalasID, daudzums, Shop, ShopTitle, ShopDescription, ShopModelID, ShopCategoryID, OrginalCode, addition, offer, state, used  FROM noliktava WHERE rindasID='" . $ID . "'";
-
-        $result = self::$DB->query($query);
-
-        if ($result->num_rows == 0) {
-            $results = array();
-        } else {
-            $results = $result->fetch_assoc();
-            $daudzums = $results['daudzums'];
-            $rindasID = $results['rindasID'];
-            $detalasID = $results['detalasID'];
-            $results['daudzums'] = $daudzums;
-            $results['Kategorijas'] = Data::categoryMaker($results['ShopCategoryID']);
-
-            $a = array("Nav pieejams", "Pieejams", "Pasūtāms");
-            $i = 0;
-            foreach ($a as $e) {
-                $i == $results['state'] ? $selected = 'selected="selected"' : $selected = "";
-                $piejamiba[] = "<option " . $selected . " value='" . $i . "'>" . $e . "</option>";
-                $i++;
-            }
-            $piejams = implode("\n", $piejamiba);
-            $results['piejams']  = $piejams;
-
-            $results['rindasID'] = $rindasID;
-            $results['ShopModel'] = Data::HTMLGrupas($results[ShopModelID], $results['SuperID']);
-            $results['offer'] == 0 ? $results['offer'] = "" : $results['offer'] = 'checked="yes"';
-            $results['used'] == 0 ?  $results['used'] = "" : $results['used'] = 'checked="yes"';
-            $results['Shop'] == 0 ?  $results['Shop'] = "" : $results['Shop'] = 'checked="yes"';
-            $results['detalasID'] = $detalasID;
-        }
-
-        $query2 = "SELECT PriceNote, PlaceTaken, Hours, TotalPrice, PlaceDone, Note, BookNote, AdminEdit FROM Data WHERE ID='" . $ID . "'";
-        $result2 = self::$DB->query($query2);
-        $results2 = $result2->fetch_assoc();
-
-        $results = $results + $results2;
-
-        return $results;
-    }
-
-    function categoryMaker($ID) {
-        $query = "SELECT * FROM categories_linear Order by iorder ASC";
-        if (!$result = self::$DB->query($query)) {
-            throw new Error('Read error with Data class Function categoryMaker On Line:(' . __LINE__ . ')');
-        }
-        $results = array();
-        while ($row = $result->fetch_assoc()) {
-            $atstarpe = "";
-            for ($i = 1; $i < $row[level]; $i++) {
-                $atstarpe = "&nbsp; ";
-                $atstarpe = $atstarpe . $atstarpe;
-            }
-            $row['id'] == $ID ? $selected = 'selected="selected"' : $selected = "";
-            $results[] = '<option ' . $selected . ' value="' . $row['ID'] . '">' . $atstarpe . $row[title] . '</option>';
-        }
-        return implode("\n", $results);
-    }
-
-    function noliktava_atlikums($ID) {
-        $query = "SELECT ID AS detalasID,PlaceTaken AS artikuls, Note AS nosaukums, TotalPrice AS atlikums, PriceNote AS mervieniba, Data.Hours AS rezervets FROM Data WHERE ID=" . $ID;
-        $result = self::$DB->query($query);
-        return $result->fetch_assoc();
-    }
-
-    function SaveDetala($data) {
-        if ($_SESSION['User']->getStatus() < 99) {
-            if ($_POST['AdminEdit'] == "1") {
-                if ($_POST['pass'] != Config::EDIT_PASS) {
-                    return "Nepareiza parole";
-                }
-            }
-        }
-
-        $query = 'UPDATE `noliktava` SET
-                         `detalasID`="' . $data[detalasID] . '",
-                         `daudzums`="' . $data[daudzums] . '",
-                         `type`="1",
-                         `Shop`="' . (int)$data[Shop] . '",
-                         `ShopTitle`="' . $data[ShopTitle] . '",
-                         `ShopDescription`="' . $data[ShopDescription] . '",
-                         `ShopModelID`="' . $data[ShopModelID] . '",
-                         `ShopCategoryID`="' . $data[ShopCategoryID] . '",
-                         `OrginalCode`="' . $data[OrginalCode] . '",
-                         `addition`="' . $data[addition] . '",
-                         `offer`="' . (int)$data[offer] . '",
-                         `state`="' . $data[state] . '",
-                         `used`="' . (int)$data[used] . '"
-                   WHERE `rindasID`=' . $data[rindasID];
-
-        if (!self::$DB->query($query)) {
-            throw new Error('Write error on Data (' . __LINE__ . ') : ' . self::$DB->error);
-        }
-
-        if ($data[SuperID] == 0) {
-            $query = 'INSERT INTO `noliktava` (`rindasID`,`detalasID`,`daudzums`,`type`,`Shop`,`ShopTitle`,`ShopDescription`,`ShopModelID`,`ShopCategoryID`,`OrginalCode`,`addition`,`offer`,`state`,`used`) VALUES (' . $data[rindasID] . ',"' . $data[detalasID] . '","' . $data[daudzums] . '",1,"' . $data[Shop] . '","' . $data[ShopTitle] . '","' . $data[ShopDescription] . '","' . $data[ShopModelID] . '","' . $data[ShopCategoryID] . '","' . $data[OrginalCode] . '","' . $data[addition] . '","' . $data[offer] . '","' . $data[state] . '","' . $data[used] . '")';
-
-            if (!self::$DB->query($query)) {
-                throw new Error('Write error on Data (' . __LINE__ . ') : ' . self::$DB->error);
-            }
-        }
-
-        $this->setID(self::$DB->insert_id);
-        $Data = $this->getRow($data[rindasID]);
-        return self::ArrayToJson(array(1, Template::Process('Row', $Data)));
-    }
-
-    function NoliktavaSave($data) {
-        $type = $this->DataByID($data[rindasID], 'IDType');
-        $title = substr($this->DataByID($data[detalasID], 'Note'), 0, 25) . " " . $this->DataByID($data[detalasID], 'PlaceTaken');
-        $vienibas = $this->DataByID($data[detalasID], 'PriceNote');
-        $sum = ($this->NolByID($data[detalasID], 'daudzums')) * $data[daudzums];
-
-        $query = "select ID from noliktava where rindasID =" . $data[rindasID];
-        $result = self::$DB->query($query);
-        if ($result->num_rows == 0) {
-            $query = "INSERT INTO `noliktava` (`rindasID`, `detalasID`, `daudzums`) VALUES (" . $data[rindasID] . ", " . $data[detalasID] . ", " . $data[daudzums] . ")";
-            if (!self::$DB->query($query)) {
-                throw new Error('Write error on Data (' . __LINE__ . ') : ' . self::$DB->error);
-            }
-        } else {
-            $query = "UPDATE `noliktava` SET `rindasID`= " . $data[rindasID] . ", `detalasID`=" . $data[detalasID] . ", `daudzums`=" . $data[daudzums] . " WHERE rindasID =" . $data[rindasID];
-            if (!self::$DB->query($query)) {
-                throw new Error('Write error on Data (' . __LINE__ . ') : ' . self::$DB->error);
-            }
-        }
-
-        //Tiek izdota prece
-        Warehous::izdot($data[detalasID], $data[rindasID], $data[daudzums], $vienibas, $title, $type, $data[order], $sum);
-    }
-
-    /**
-     * Pārliecinas vai ir ievadītas preces vērtības
-     *
-     * @return Error
-     * @param array $Data
-     * @author Jānis
-     */
-    function SaveNoliktava($Data) {
-        if ($data['IDType'] == Config::AddNoliktava || $data['IDType'] == Config::DelNoliktava) {
-            $value = $Data['detalasID'];
-            $value = (int)$value;
-            if ($value == 0) throw new Error(Language::$Data['SetIDDetaļas']);
-
-            $value2 = $Data['daudzums'];
-            $value2 = (int)$value2;
-            if ($value2 == 0) throw new Error(Language::$Data['SetSkaits']);
-        }
-    }
-
     function ChangeSelected($data) {
         foreach ($_SESSION['CechedRow'] as $k => $v) {
             $OldID = $k;
@@ -1873,59 +1613,6 @@ class Data extends DBObject {
         }
 
         return  1;
-    }
-
-    function ceckArtikuls($text) {
-        $query = "SELECT PlaceTaken FROM Data WHERE `IDType`  = " . Config::Noliktava . " AND Status = 1 AND PlaceTaken = '" . $text . "'";
-        $result = self::$DB->query($query);
-        return $result->num_rows == 0 ? 0 : 1;
-    }
-
-    function FormSave() {
-        $Data = $this->getRow($_POST[ID]);
-        $Data2 = $_POST;
-        $Data['pass'] = $Data2['pass'];
-
-        foreach ($Data as $key => $value) {
-            foreach ($Data2 as $key2 => $value2) {
-                if ($key == "IDDoc") {
-                    if ($value == "") {
-                        $Data[IDDoc] = "MadeBySystem";
-                    }
-                }
-                if ($key == $key2) {
-                    $Data[$key] = $value2;
-                }
-            }
-        }
-
-        // Ja rinda ir detaļa un viņa ir veikalā tipa piezīmēs ievada V un ja viņai ari ir pievienota rindas bilde B
-
-        if ($Data['IDType'] == 2362) {
-            if ($Data2['Shop'] == 1) {
-                $TextType = 'V';
-                // add faili image function
-                $fileFnExists = false;
-                if (file_exists("faili/sysapi.php")) {
-                    require_once "faili/sysapi.php";
-                    $fileFnExists = true;
-                }
-
-                if ($fileFnExists) $link = _faili_row_file_exists($Data[ID]);
-
-                if ($link != NULL) {
-                    $TextType = 'V B';
-                }
-            } else {
-                $TextType = '';
-            }
-
-            $Data['TextType'] = $TextType;
-        }
-
-        $_POST = $Data;
-
-        return $this->Save();
     }
 
     function AddAllSelected() {
@@ -1989,50 +1676,6 @@ class Data extends DBObject {
         }
 
         return print $query;
-    }
-
-    function PrecuGrupas($ID) {
-        $IDD = $ID . '0';
-        $ID = explode(",", $IDD);
-        $query = "SELECT * FROM groups_linear ORDER BY FIELD(id, " . $IDD . ") DESC";
-
-        if (!$result = self::$DB->query($query)) {
-            throw new Error('Read error on Data (' . __LINE__ . ')');
-        }
-        $i = 0;
-        while ($row = $result->fetch_assoc()) {
-            if ($i % 2 == 0) {
-                $row['Odd'] = 'Odd';
-                $i++;
-            } else {
-                $row['Odd'] = '';
-                $i++;
-            }
-
-            if (in_array($row['id'], $ID)) {
-                $row['selected'] = 'checked="yes"';
-            } else {
-                $row['selected'] = "";
-            }
-
-            $rows[] = $row;
-        }
-        return Template::Process('/Dialog/PrecuGrupasRow', $rows);
-    }
-
-    function HTMLGrupas($ID, $form) {
-        $query = "SELECT * FROM groups_linear WHERE id IN (" . $ID . "0)";
-
-        if (!$result = self::$DB->query($query)) {
-            throw new Error('Read error on Data (' . __LINE__ . ')');
-        }
-        while ($row = $result->fetch_assoc()) {
-            $rows .= "<h6 style='margin: 2px;'>" . $row['title'] . "</h6>";
-        }
-        if ($ID == "") {
-            $ID = 0;
-        }
-        return "<span onclick=\"Javasript:OpenForm('PrecuGrupas','GrupasMenu" . $form . "','DialogForm','Grupas','530','" . $ID . "')\"><span style=\"text-decoration: underline; cursor: pointer; color: blue;\">Modeļi:</span> " . $rows . "</span>";
     }
 
     function TrimDate($date) {

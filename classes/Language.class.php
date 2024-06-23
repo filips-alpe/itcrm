@@ -19,7 +19,6 @@ class Language {
         'WrongDelPass' => 'Nepareiza dzēšanās parole!',
         'Search' => 'Meklēt',
         'Tasks' => 'Uzdevumi',
-        'Warehous' => 'Noliktava',
 
         'Today' => 'Šodien',
         'Yesterday' => 'Vakar',
@@ -68,7 +67,6 @@ class Language {
         'R_bilde_Admin' => 'Pie.RB',
         'File_Admin' => 'Pie.F',
         'OneDay' => 'Re.Š',
-        'noliktava' => 'No.A',
         'MultiChange' => 'Mu.L',
         'DelFile' => 'Dz.F',
 

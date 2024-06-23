@@ -13,7 +13,6 @@ class Users extends DBObject {
     private $add_r_bilde;
     private $add_files;
     private $OneDay;
-    private $noliktava;
     private $MultiChange;
     private $DelFile;
 
@@ -139,7 +138,6 @@ class Users extends DBObject {
         $row['add_r_bilde'] = $row['add_r_bilde'] == 0 ? 'Nav' : 'Ir';
         $row['add_files'] = $row['add_files'] == 0 ? 'Nav' : 'Ir';
         $row['OneDay'] = $row['OneDay'] == 0 ? 'Nav' : 'Ir';
-        $row['noliktava'] = $row['noliktava'] == 0 ? 'Nav' : 'Ir';
         $row['MultiChange'] = $row['MultiChange'] == 0 ? 'Nav' : 'Ir';
         $row['DelFile'] = $row['DelFile'] == 0 ? 'Nav' : 'Ir';
 
@@ -229,7 +227,6 @@ class Users extends DBObject {
                          `add_r_bilde`=' . (int)$this->getadd_r_bilde() . ',
                          `add_files`=' . (int)$this->getadd_files() . ',
                          `OneDay`=' . (int)$this->getOneDay() . ',
-                         `noliktava`=' . (int)$this->getnoliktava() . ',
                          `DelFile`=' . (int)$this->getDelFile() . ',
                          `MultiChange`=' . (int)$this->getMultiChange();
 
@@ -261,7 +258,6 @@ class Users extends DBObject {
                          `add_r_bilde`=' . (int)$this->getadd_r_bilde() . ',
                          `add_files`=' . (int)$this->getadd_files() . ',
                          `OneDay`=' . (int)$this->getOneDay() . ',
-                         `noliktava`=' . (int)$this->getnoliktava() . ',
                          `DelFile`=' . (int)$this->getDelFile() . ',
                          `MultiChange`=' . (int)$this->getMultiChange() . '
                    WHERE `ID`=' . (int)$this->getID();

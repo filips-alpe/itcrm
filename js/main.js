@@ -129,12 +129,10 @@ function Save(Class) {
             if (Class == "Data")
               $("#" + Class + "List tr:first").before(answ[1]);
             else $("#" + Class + "List tr:first").after(answ[1]);
-            $("#ievadeNoliktava").remove();
           } else {
             //$('#FilterForm').removeClass('hideFilter');
             $("#FilterForm").css("visibility", "visible");
             $("#" + Class + "" + ID).replaceWith(answ[1]);
-            $("#ievadeNoliktava").remove();
           }
 
         f[0].reset();
@@ -486,9 +484,8 @@ function EditUser(ID) {
   var add_r_bilde = tds[7].innerHTML;
   var add_files = tds[8].innerHTML;
   var OneDay = tds[9].innerHTML;
-  var noliktavas_ap = tds[10].innerHTML;
-  var MultiChange = tds[11].innerHTML;
-  var DelFile = tds[12].innerHTML;
+  var MultiChange = tds[10].innerHTML;
+  var DelFile = tds[11].innerHTML;
 
   if (add_order == "Ir") {
     $("#EditOrder").attr("checked", "checked");
@@ -506,9 +503,6 @@ function EditUser(ID) {
     $("#OneDay").attr("checked", "checked");
   }
 
-  if (noliktavas_ap == "Ir") {
-    $("#noliktava_ap").attr("checked", "checked");
-  }
   if (MultiChange == "Ir") {
     $("#MultiChange").attr("checked", "checked");
   }
@@ -1217,320 +1211,9 @@ function RowEdit(ID) {
   $.post(URL + "/Data/Filter", data, success);
 }
 
-function getNoliktava(el, type) {
-  ID = el.id.replace(/Data/, "");
-  var data = "DetalasID=" + ID;
-  container = $("#scrollDiv");
-  $("#noliktava").css(
-    "top",
-    $(el).offset().top -
-      container.offset().top +
-      $(el).height() +
-      container[0].scrollTop
-  );
-  success = function (answ) {
-    Loading(0, 0);
-    try {
-      answ = eval("(" + answ + ")");
-    } catch (ex) {
-      answ = new Array(answ);
-    }
-
-    if (answ == 0) {
-      $("#DetalasForm #rindasID").val(ID);
-      $("#noliktava").show();
-    } else {
-      $.each(answ, function (i, object) {
-        $("#DetalasForm #" + i).val(object);
-      });
-      var text =
-        '<a href="javascript:RowEdit(' +
-        answ["detalasID"] +
-        ');" >' +
-        answ["nosaukums"] +
-        "</a> uz doto brīdi noliktavā atlicis " +
-        answ["atlikums"] +
-        " " +
-        answ["mervieniba"];
-      $("#DetalasForm #atlikums").html(text);
-      $("#noliktava").show();
-    }
-  };
-  Loading(0, 1);
-  $.post(URL + "/Data/noliktava", data, success);
-}
-
-function getNolMatreals(el) {
-  ID = el.id.replace(/Data/, "");
-  $("#MatrealsForm #rindasID").val(ID);
-  $(el).removeClass("Odd");
-  $(el).toggleClass("formback");
-
-  var data = "DetalasID=" + ID;
-  container = $("#scrollDiv");
-  $("#matreals").css(
-    "top",
-    $(el).offset().top -
-      container.offset().top +
-      $(el).height() +
-      container[0].scrollTop
-  );
-  success = function (answ) {
-    Loading(0, 0);
-    try {
-      answ = eval("(" + answ + ")");
-    } catch (ex) {
-      answ = new Array(answ);
-    }
-    $("div.matrealaapraksts span#Nosaukums").html(answ["PlaceTaken"]);
-    if (answ == 0) {
-      $("#MatrealsForm #rindasID").val(ID);
-      $("#matreals").show();
-    } else {
-      $.each(answ, function (i, object) {
-        if (i == "Shop" && object == 1) {
-          $("#MatrealsForm #Shop").attr("checked", "checked");
-        } else {
-          $("#MatrealsForm #Shop").val(1);
-        }
-        $("#MatrealsForm #" + i).val(object);
-      });
-      var text =
-        '<a href="javascript:RowEdit(' +
-        answ["detalasID"] +
-        ');" >' +
-        answ["nosaukums"] +
-        "</a> uz doto brīdi noliktavā atlicis " +
-        answ["atlikums"] +
-        " " +
-        answ["mervieniba"] +
-        " un rezervēti " +
-        answ["rezervets"] +
-        " " +
-        answ["mervieniba"];
-      $("#MatrealsForm #atlikums").html(text);
-
-      $("#MatrealsForm #ShopModel")
-        .bind("keydown", function (event) {
-          if (
-            event.keyCode === $.ui.keyCode.TAB &&
-            $(this).data("autocomplete").menu.active
-          ) {
-            event.preventDefault();
-          }
-        })
-        .autocomplete({
-          source: "/lv/Josn/FilterTypes",
-          focus: function () {
-            return false;
-          },
-          select: function (event, ui) {
-            var terms = split(this.value);
-            terms.pop();
-            terms.push(ui.item.value);
-            terms.push("");
-            this.value = terms.join(", ");
-
-            var ID = $("#MatrealsForm input#ShopModelID");
-            var termsID = split(ID.val());
-            termsID.pop();
-            termsID.push(ui.item.ID);
-            termsID.push("");
-            ID.val(termsID.join(", "));
-
-            return false;
-          },
-          minLength: 1,
-        });
-
-      $("#MatrealsForm #ShopCategory").autocomplete({
-        source: "/lv/Josn/Orders",
-        select: function (event, ui) {
-          var ID = $("#MatrealsForm input#ShopCategoryID");
-          ID.val(ui.item.ID);
-        },
-        minLength: 1,
-      });
-      $("#matreals").show();
-    }
-  };
-  Loading(0, 1);
-  $.post(URL + "/Data/noliktava", data, success);
-}
-
-function NoliktavaAtlikums(ID) {
-  var data = "ID=" + ID;
-
-  success = function (answ) {
-    Loading(0, 0);
-    //alert(answ);
-    try {
-      answ = eval("(" + answ + ")");
-    } catch (ex) {
-      answ = new Array(answ);
-    }
-
-    var text =
-      '<a href="javascript:RowEdit(' +
-      answ["detalasID"] +
-      ');" >' +
-      answ["nosaukums"] +
-      "</a> uz doto brīdi noliktavā atlicis " +
-      answ["atlikums"] +
-      " " +
-      answ["mervieniba"] +
-      " un rezervēti " +
-      answ["rezervets"] +
-      " " +
-      answ["mervieniba"];
-    $("#atlikums").html(text);
-    $("#mervieniba").val(answ["mervieniba"]);
-    $("#detalasID").val(answ["detalasID"]);
-  };
-  Loading(0, 1);
-  $.post(URL + "/Data/NoliktavaAtlikums", data, success);
-}
-
-function addNoliktavaAutoComp() {
-  $("#artikuls").autocomplete({
-    source: "/lv/Josn/Noliktava",
-    select: function (event, ui) {
-      NoliktavaAtlikums(ui.item.ID);
-    },
-    minLength: 2,
-  });
-}
-
-function NoliktavaSave() {
-  var dz = $("#MatrealsForm #daudzums").val();
-
-  //if(isNaN(dz) == true)
-  //return alert('Daudzumam jābūt skaitlim.');
-
-  var data = $("#MatrealsForm").serialize();
-  var ID = $("#MatrealsForm #rindasID").val();
-  success = function (answ) {
-    Loading(0, 0);
-
-    try {
-      answ = eval("(" + answ + ")");
-    } catch (ex) {
-      answ = new Array(answ);
-    }
-
-    if (answ[0] == 1) {
-      //$('#Data'+ID).replaceWith(answ[1]);
-      SaveForm();
-      $("#matreals").hide();
-      clerDetalas();
-    } else {
-      alert(answ);
-    }
-  };
-
-  Loading(0, 1);
-  $.post(URL + "/Data/SaveDetala", data, success);
-}
-
-function NoliktavaDialogSave() {
-  var dz = $("#MatrealsDialogForm #daudzums").val();
-
-  //if(isNaN(dz) == true)
-  //return alert('Daudzumam jābūt skaitlim.');
-
-  var data = $("#MatrealsDialogForm").serialize();
-  var ID = $("#MatrealsDialogForm #rindasID").val();
-  var AdminEdit = $("#MatrealsDialogForm #AdminEdit").val();
-
-  if (Admin != 1) {
-    if (AdminEdit == 1) {
-      var pass = prompt("Lai labotu ievadiet paroli");
-
-      if (pass == "") {
-        alert("Ievadiet paroli");
-        return;
-      }
-    }
-  }
-
-  success = function (answ) {
-    Loading(0, 0);
-
-    try {
-      answ = eval("(" + answ + ")");
-    } catch (ex) {
-      answ = new Array(answ);
-    }
-
-    if (answ[0] == 1) {
-      //$('#Data'+ID).replaceWith(answ[1]);
-      SaveForm(pass);
-      $("#DialogForm").dialog("close");
-      $("#DialogForm").remove();
-      $("div#scrollDiv").append('<div id="DialogForm"></div>');
-    } else {
-      alert(answ);
-    }
-  };
-
-  Loading(0, 1);
-  $.post(URL + "/Data/SaveDetala", data + "&pass=" + pass, success);
-}
-
-function clerNoliktava() {
-  document.getElementById("DetalasForm").reset();
-  $("#noliktava #atlikums").html("");
-}
-
-function AddNoliktavaForm(ID) {
-  var RowID = $("form#AddDataForm input.hide").val();
-
-  if (
-    ID == AddNolTyp ||
-    ID == DelNolTyp ||
-    ID == AtgNolTyp ||
-    ID == RezNolTyp
-  ) {
-    $("#ievadeNoliktava").remove();
-    $("#AddDataForm").append(
-      '<div class="noliktava" id="ievadeNoliktava"> </div>'
-    );
-    $("#ievadeNoliktava").append("<span> Artikuls:</span>");
-    $("#ievadeNoliktava").append('<input id="artikuls" type="text" />');
-    $("#ievadeNoliktava").append(
-      '<input id="detalasID" type="text" value="" name="detalasID" style="display: none">'
-    );
-    $("#ievadeNoliktava").append("<span> daudzums:</span>");
-    $("#ievadeNoliktava").append(
-      '<input name="daudzums" size="5" id="daudzums" type="text" />'
-    );
-    $("#ievadeNoliktava").append(
-      '<input style="border:none; width: 30px; background-color: silver;" id="mervieniba"  readonly="readonly" type="text" />'
-    );
-    $("#ievadeNoliktava").append(
-      '<a title="Pievienot jaunu preci" class="noliktavaadd" href="javascript:NewPrec();"><span class="ui-icon ui-icon-document"></span></a>'
-    );
-    $("#ievadeNoliktava").append("<hr>");
-    $("#ievadeNoliktava").append('<span id="atlikums"></span>');
-
-    addNoliktavaAutoComp();
-  }
-  if (ID == 72) {
-    $("#AddDataForm #pprNr").focus();
-  }
-}
-
 function showMe(it, box) {
   var vis = box.checked ? "block" : "none";
   document.getElementById(it).style.display = vis;
-}
-
-function clerDetalas() {
-  var ID = $("#MatrealsForm #rindasID").val();
-  var Obj = $("tr#Data" + ID + ".Data");
-  $(Obj).removeClass("formback");
-  document.getElementById("MatrealsForm").reset();
-  $("#MatrealsForm #Shop").attr("checked", false);
 }
 
 function ChangeField() {
@@ -1624,80 +1307,6 @@ function ChangeSelected() {
   $.post(URL + "/Data/ChangeSelected", data, success);
 }
 
-function nolAddDet() {
-  var data = $("#NewDetForm").serialize();
-
-  success = function (answ) {
-    try {
-      answ = eval("(" + answ + ")");
-    } catch (ex) {
-      answ = new Array(answ);
-    }
-    var rindasID = answ[2];
-    var daudzums = $("form#NewDetForm #daudzums").val();
-    var detalasID = $("form#NewDetForm #detalasID").val();
-
-    data =
-      "rindasID=" +
-      rindasID +
-      "&daudzums=" +
-      daudzums +
-      "&detalasID=" +
-      detalasID;
-
-    $.post(URL + "/Data/SaveDetala", data);
-
-    Loading(0, 0);
-  };
-
-  Loading(0, 1);
-  $.post(URL + "/Data/Save", data, success);
-}
-
-function NewPrec() {
-  clearNewDet();
-  $("form#NewDetForm #IDType").val(noliktava);
-  $("form#NewDetForm #OrderSelect").autocomplete({
-    source: "/lv/Josn/Orders",
-    select: function (event, ui) {
-      $("form#NewDetForm #IDOrder").val(ui.item.ID);
-    },
-    minLength: 1,
-  });
-
-  $("#AddNol").dialog({
-    buttons: {
-      Saglabāt: function () {
-        var novietojums = $("form#NewDetForm #PlaceDone").val();
-        var mervieniba = $("form#NewDetForm #PriceNote").val();
-        var minAtlik = $("form#NewDetForm #detalasID").val();
-        $("form#NewDetForm #PlaceDone").val(
-          novietojums + " min=" + minAtlik + mervieniba
-        );
-        nolAddDet();
-
-        $(this).dialog("close");
-      },
-      Aizvēt: function () {
-        $(this).dialog("close");
-      },
-    },
-  });
-}
-
-function clearNewDet() {
-  $("form#NewDetForm #OrderSelect").val("");
-  $("form#NewDetForm #PlaceTaken").val("");
-  $("form#NewDetForm #IDOrder").val("");
-  $("form#NewDetForm #Note").val("");
-  $("form#NewDetForm #PriceNote").val("");
-  $("form#NewDetForm #daudzums").val("");
-  $("form#NewDetForm #PlaceDone").val("");
-  $("form#NewDetForm #detalasID").val("");
-  $("form#NewDetForm #BookNote").val("");
-  $("form#NewDetForm #TotalPrice").val("");
-}
-
 function CeckAllRow() {
   $.get("/lv/Data/AddAllSelected", "", function () {
     location.reload();
@@ -1708,38 +1317,12 @@ function CeckAllRow() {
   // });
 }
 
-function NolCeckAllRow() {
-  $("div#scrollDiv table#DataList tbody tr td:first-child input:checkbox").each(
-    function () {
-      CeckRow(this.value);
-    }
-  );
-}
-
 function UnCeckAllRow() {
   $("div#scrollDiv table#DataList tbody tr td:first-child input:checkbox").each(
     function () {
       UnCheckRow(this.value);
     }
   );
-}
-
-function SaveForm(password) {
-  var ID = $("form#MatrealsDialogForm input#rindasID").val();
-  var Sum = $("form#MatrealsDialogForm input#daudzums").val();
-  var Data = $("form#MatrealsDialogForm").serialize();
-  Data = Data + "&ID=" + ID + "&Sum=" + Sum;
-  success = function (answ) {
-    Loading(0, 0);
-    try {
-      answ = eval("(" + answ + ")");
-    } catch (ex) {
-      answ = new Array(answ);
-    }
-    $("#Data" + ID).replaceWith(answ[1]);
-  };
-  Loading(0, 1);
-  $.post("/lv/Data/FormSave", Data + "&pass=" + password, success);
 }
 
 function editfil(ID) {

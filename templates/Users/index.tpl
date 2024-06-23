@@ -43,7 +43,6 @@
 <input ID="Add_r_bilde" type="checkbox" name="add_r_bilde" value="1" /> Pievienot rindas bildi<br />
 <input ID="Add_file" type="checkbox" name="add_files" value="1" /> Pievienot failus<br />
 <input ID="OneDay" type="checkbox" name="OneDay" value="1" /> Redzēt tikai šodienu<br />
-<input ID="noliktava_ap" type="checkbox" name="noliktava" value="1" /> Noliktavas apraksts<br />
 <input ID="MultiChange" type="checkbox" name="MultiChange" value="1" /> Multi labošana<br />
 <input ID="DelFile" type="checkbox" name="DelFile" value="1" /> Dzēst failus<br />
 <input type="checkbox" value="1" name="CopyRights" id="CopyRights"> Kopēt tiesibas No: <input type="text" id="From" maxlength="5" style="width: 42px;" value=""><input  style="display: none;" type="text" id="FromID" name="FromID" value=""><br>
@@ -62,7 +61,6 @@
     <td width="30" >[[:R_bilde_Admin:]]</td>
     <td width="30" >[[:File_Admin:]]</td>
     <td width="30" >[[:OneDay:]]</td>
-    <td width="30" >[[:noliktava:]]</td>
     <td width="30" >[[:MultiChange:]]</td>
     <td width="30" >[[:DelFile:]]</td>
     <td width="95" class="[:NoAdmin:]">[[:Actions:]]</td>

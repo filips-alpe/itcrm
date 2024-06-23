@@ -100,11 +100,6 @@ class System extends DBObject {
                         var Admin="' . $_SESSION['isAdmin'] . '";
                         var Months = [\'' . implode('\',\'', explode(',', Language::$Main['Months'])) . '\'];
                         var Week = [\'' . implode('\',\'', explode(',', Language::$Main['CalendarWeek'])) . '\'];
-                        var noliktava="' . Config::Noliktava . '";
-                        var AddNolTyp="' . Config::AddNoliktava . '";
-                        var DelNolTyp="' . Config::DelNoliktava . '";
-                        var RezNolTyp="' . Config::ReservNoliktava . '";
-                        var AtgNolTyp="' . Config::ReturnNoliktava . '";
                         ';
 
         $Vars = array_merge($Vars, array_diff_key($Global, $Vars));

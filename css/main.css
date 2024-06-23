@@ -296,18 +296,6 @@ a.icon-expand {
 .hide {
     display: none;
 }
-#ievadeNoliktava {
-    margin-bottom: 5px;
-    background-color: silver;
-    height: 54px;
-    left: 0;
-    margin-left: 17px;
-    padding-right: 0;
-    padding-top: 5px;
-    position: static;
-    text-align: center;
-    width: 95%;
-}
 #tblRights tr td,
 #tblHideRights tr td {
     text-align: center;
@@ -499,30 +487,6 @@ a.reminder {
     margin: 2px;
 }
 
-#noliktava {
-    width: 100%;
-    position: absolute;
-    display: none;
-    left: 0px;
-}
-#noliktava .main {
-    width: 98%;
-    border: 5px solid #ddd;
-    background: #fff;
-}
-
-#matreals {
-    width: 100%;
-    position: absolute;
-    display: none;
-    left: 0px;
-}
-#matreals .main {
-    width: 98%;
-    border: 5px solid #ddd;
-    background: #fff;
-}
-
 #info .main {
     width: 98%;
     border: 5px solid #ddd;
@@ -629,21 +593,6 @@ a.reminder {
     margin: 0 3px;
     width: 17px;
 }
-/*
-#bordertbl {border: 1px solid;}
-#bordertbl th {border: 1px solid;}
-#foottbl {border: 1px solid;}
-#foottbl td{border: 1px solid;}
-#Preces td
-{
-border:1px solid black;
-}
-
-*/
-
-#Preces th {
-    border: 1px solid black;
-}
 
 .bordersolid {
     border: 1px solid black;
@@ -729,19 +678,4 @@ form.hideFilter table tr td {
 
 .OnEditBox {
     background-color: yellow;
-}
-
-a.noliktavaadd {
-    background-attachment: scroll;
-    background-clip: border-box;
-    background-color: #dfeffc;
-    background-image: none;
-    background-origin: padding-box;
-    background-position: 0 0;
-    background-repeat: repeat;
-    background-size: auto auto;
-    cursor: pointer;
-    height: 16px;
-    position: absolute;
-    width: 16px;
 }

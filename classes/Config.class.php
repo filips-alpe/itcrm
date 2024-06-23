@@ -14,11 +14,4 @@ class Config {
     // PARAMS
     const SHOW_PERIOD = -2; // days
     const PAGE_LENGTH = 10000;
-
-    // TYPES
-    const Noliktava = 2362; // Noliktavas ID
-    const AddNoliktava = 2366; // Pievienot noliktavā ID
-    const DelNoliktava = 2367; // Noņemt no noliktavas ID
-    const ReservNoliktava = 2369; // Rezervēts no noliktavas ID
-    const ReturnNoliktava = 2370; // Atgriezts noliktavā ID
 }

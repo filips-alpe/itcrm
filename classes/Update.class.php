@@ -31,21 +31,11 @@ class Update extends DBObject {
         }
 
         while ($row = $result->fetch_assoc()) {
-            $shop = Warehous::getRow($row['ID']);
-            $shop['Shop'] == 1 ? $Shop = 'V' : $Shop = '';
             if ($fileFnExists) {
                 $link = _faili_row_file_exists($row['ID']);
             }
             $link != NULL ? $Picture = 'B' : $Picture = '';
-            $Shop != NULL && $Picture != NULL ? $Space = ' ' : $Space = '';
-            $TextType = $Shop . $Space . $Picture;
-            if ($Shop == NULL && $Picture == NULL) {
-                // Apdeitot ka tukšu
-                $this->Update($row['ID'], $TextType);
-            } else {
-                // Apdeitot V + B vai B vai V
-                $this->Update($row['ID'], $TextType);
-            }
+            $this->Update($row['ID'], $Picture);
         }
         return $data;
     }

@@ -113,14 +113,6 @@ $(".add [name=PersonSelect]").autocomplete({
     minLength: 2,
 });
 
-$(".add [name=TypeSelect]").autocomplete({
-    source: "/lv/Josn/Types",
-    select: function( event, ui){
-        AddNoliktavaForm(ui.item.ID);
-    },
-    minLength: 1,
-});
-
 $(".add [name=OrderSelect]").autocomplete({
     source: "/lv/Josn/Orders",
     minLength: 1,

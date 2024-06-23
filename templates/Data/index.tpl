@@ -98,7 +98,7 @@
             <span class="text" style="display: none;">.ui-icon-circle-close</span>
         </li>
     <br/><input type="checkbox" title="Slēp! Var redzēt tikai administrātors." name="Hidden" value="1" style="width:15px; position:relative; top:2px; " class="[:HidePeriods:]"/>
-    <input style="width:70px;"  type="button" value="&mdash;" onclick="this.form.reset(); $('#newTplBtn, #editTplBtn').css('color',''); $('input:not(:button,:submit)',this.form).addClass('light'); $('#DataList .onedit').removeClass('onedit'); $('#FilterForm').removeClass('hideFilter'); $('input.active').removeClass('edit'); $('input.disabl').removeClass('edit'); editbox(0,this); $('#ievadeNoliktava').remove();  $('tr.Selected').removeClass('Selected').addClass('selected'); " />
+    <input style="width:70px;"  type="button" value="&mdash;" onclick="this.form.reset(); $('#newTplBtn, #editTplBtn').css('color',''); $('input:not(:button,:submit)',this.form).addClass('light'); $('#DataList .onedit').removeClass('onedit'); $('#FilterForm').removeClass('hideFilter'); $('input.active').removeClass('edit'); $('input.disabl').removeClass('edit'); editbox(0,this); $('tr.Selected').removeClass('Selected').addClass('selected'); " />
   <!--  <span style="position:relative; top:0px; left:0px;">
         <a href="javascript:;" onclick="reversEdit()" style="position:absolute; right:-12px; top:0px;">A</a>
   </span> -->
@@ -262,168 +262,6 @@
     </div>
    </div>
 
-    <div id="noliktava" align="center" style="display: none;">
-        <div class="main">
-
-                 <a  href="close" onclick="event.returnValue = false;  $('#noliktava').hide();  clerNoliktava(); return false;">
-     <li style="float: right; height: 16px;width: 16px;  list-style-type: none; margin: 2px;" title="Aizvērt" class="ui-state-default ui-corner-all">
-            <span class= "ui-icon ui-icon-circle-close"> </span>
-            <span class="text" style="display: none;">.ui-icon-circle-close</span>
-        </li></a>
-
-        <div class="DetDat">
-                <h2>Detaļas apraksts</h2>
-                <form id="DetalasForm">
-<label for="artikuls" title="Detaļas artikuls">Artikuls:</label><input style="display: none" id="rindasID" name="rindasID" type="text" value=""/><input style="display: none" id="detalasID" name="detalasID" type="text" value=""/><input id="artikuls" type="text" value=""/> <label for="daudzums" name="daudzums" title="Daudzums">Daudzums:</label><input id="daudzums" name="daudzums" value="" size="5" type="number"/> :<input  style="border:none;"  ID="mervieniba" type="text" value="" readonly="readonly" />
-                    <hr>
-                        <span id="atlikums"></span>
-                            <div  style="height: 20px;"></div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-<div style="display:none" id="AddNol" title="Pievienot jaunu preci">
-    <form id="NewDetForm"style="width: 275px;">
-
-        <table border="0">
-        <tr>
-        <td><label for="OrderSelect" title="Īpašnieks">Īpašnieks:</label></td>
-        <td><input id="OrderSelect" type="text" name="OrderSelect">
-            <input style="display: none;" id="IDOrder" type="text" name="IDOrder">
-            <input style="display: none;" id="IDType" type="text" name="IDType" >
-            <input style="display: none;" id="IDPerson" type="text" name="IDPerson" value="[:UserID:]">
-        </td>
-        </tr>
-        <tr>
-        <td><label for="PlaceTaken" title="Artikuls">Artikuls:</label></td>
-        <td><input id="PlaceTaken" type="text" name="PlaceTaken"></td>
-        </tr>
-        <tr>
-        <td><label for="Note" title="Nosaukums">Nosaukums:</label></td>
-        <td><input id="Note" type="text" name="Note"></td>
-        </tr>
-        <tr>
-        <td><label for="PriceNote" title="Mērvienība">Mērvienība:</label></td>
-        <td><input id="PriceNote" type="text" name="PriceNote"></td>
-        </tr>
-        <tr>
-        <td><label for="daudzums" title="Vien.pārd.cena">Vien.pārd.cena:</label></td>
-        <td><input id="daudzums" type="text" name="daudzums"></td>
-        </tr>
-        <tr>
-        <td><label style="display: none;" for="TotalPrice" title="Daudzums">Daudzums:</label></td>
-        <td><input style="display: none;" id="TotalPrice" type="text" name="TotalPrice"></td>
-        </tr>
-        <tr>
-        <td><label for="PlaceDone" title="Novietojums">Novietojums:</label></td>
-        <td><input id="PlaceDone" type="text" name="PlaceDone"></td>
-        </tr>
-        <tr>
-        <td><label for="detalasID" title="Min atlikums">Min atlikums:</label></td>
-        <td><input id="detalasID" type="text" name="detalasID"></td>
-        </tr>
-        <tr>
-        <td><label for="BookNote" title="Pielietojums">Pielietojums:</label></td>
-        <td><input id="BookNote" type="text" name="BookNote"></td>
-        </tr>
-        </table>
-    <input style="display: none;" type="text" name="RemindDate" value="00.00.00 00:00:00" />
-    <input style="display: none;" type="text" name="Date" value="[:NOW:]" />
-</form></div>
-
-<div id="matreals" align="center" style="display: none;">
-        <div class="main" style="background: none repeat scroll 0% 0% rgb(252, 251, 196);">
-
-                 <a  href="close" onclick="event.returnValue = false;  $('#matreals').hide(); clerDetalas();   return false;">
-     <li style="float: right;   list-style-type: none; margin: 2px;" title="Aizvērt" class="ui-state-default ui-corner-all">
-            <button><span class="ui-icon ui-icon-circle-close"></span></button>
-            <span class="text" style="display: none;">.ui-icon-circle-close</span>
-        </li></a>
-
-        <a  href="javascript:NoliktavaSave()">
-        <li style="float: right;   list-style-type: none; margin: 2px;" title="Saglabāt" class="ui-state-default ui-corner-all">
-            <button><span class="ui-icon ui-icon-disk"></span></button>
-            <span class="text" style="display: none;">.ui-icon-disk</span>
-        </li></a>
-
-        <div class="matrealaapraksts">
-                <h2>Detaļas <span id="Nosaukums"></span> apraksts</h2>
-                <form id="MatrealsForm">
-
-                    <input style="display: none" id="rindasID" name="rindasID" type="text" value=""/>
-                    <input style="display: none" id="SuperID" name="SuperID" type="text" value="0"/>
-
-                            <!-- <div  style="height: 20px;"></div> -->
-
-<div id="detview">
-<table  style="width: 27%;" border="0">
-<tr>
-<td><span>Pārdošanas cena:</span></td>
-<td><input id="daudzums"  name="daudzums" value="" size="10" type="number"/></td>
-<td><span>Minimālais atlikums:</span></td>
-<td><input id="detalasID" name="detalasID" value="" size="10" type="number"/></td>
-</tr>
-<tr>
-<td><span>Rezervēts:</span></td>
-<td><input type="text" readonly="readonly" size="10" value=""  id="Hours"></td>
-<td><span>Atlicis:</span></td>
-<td><input type="text" readonly="readonly" size="10" value="" n id="TotalPrice"></td>
-</tr>
-
-<tr>
-<td><span>Artikuls:</span></td>
-<td><input type="text"  size="20" value=""  id="PlaceTaken" name="PlaceTaken"></td>
-<td><span>Mērvienība:</span></td>
-<td><input type="text"  size="10" value=""  id="PriceNote" name="PriceNote"></td>
-</tr>
-
-<tr>
-    <td COLSPAN="4"><span>Atrašanās vieta:</span></td>
-</tr>
-<tr>
-    <td COLSPAN="4"><textarea rows="1" cols="60"  id="PlaceDone" name="PlaceDone"></textarea></td>
-</tr>
-<tr>
-    <td COLSPAN="4"><span>Piezīmes:</span></td></tr><tr>
-    <td COLSPAN="4"><textarea rows="5" cols="60" name="Note" id="Note"></textarea></td>
-</tr>
-<tr>
-    <td COLSPAN="4"><span>Pielietojums:</span></td></tr><tr>
-    <td  COLSPAN="4"><textarea rows="1" cols="60" name="BookNote" id="BookNote"></textarea></td>
-</tr>
-</tr>
-<tr>
-    <td COLSPAN="4"><span>Veikals:</span></td></tr><tr>
-    <td  COLSPAN="4"><input type="checkbox" value="1" ID="Shop" name="Shop"></textarea></td>
-</tr>
-</table>
-<table>
-<table border="1"  style="width: 32%;">
-<tr style="background-color: yellow;">
-<td><span>Nosaukums: <input type="text" size="32" ID="ShopTitle" name="ShopTitle"></span></span></td>
-<td><span>Orģinālkods: <input type="text" size="42" ID="OrginalCode" name="OrginalCode"></span></td>
-</tr>
-<tr style="background-color: yellow;">
-<td><span>Cenas %: <input type="text" size="5" value="100" ID="addition" name="addition"></span>&nbsp;&nbsp; <span><input type="checkbox" ID="offer" name="offer"value="1">:Akcija</span></td>
-<td><span>Redzams:<input type="checkbox" ID="visible" name="visible" value="1"></span> <span> Lietota:<input type="checkbox" value="1" name="used" id="used"></span> <span> Pieejamība:<select name="state" id="state"><option selected="selected" value="0">Nav pieejams</option><option value="1">Pieejams</option><option value="2">Pasūtāms</option><option value="3">Izgatavojams</option></select></span></td>
-</tr>
-<tr style="background-color: yellow;">
-<td><span>Kategorija: <input type="text"  size="34" value=""  id="ShopCategory"> <input style="display: none" type="text"  size="35" id="ShopCategoryID" name="ShopCategoryID"></span></td>
-<td><span>Modeļi: <input type="text"  size="35" value=""  id="ShopModel"><input style="display: none" type="text"  size="35" id="ShopModelID" name="ShopModelID"></span></td>
-</tr>
-<tr style="background-color: yellow;" >
-    <td COLSPAN="2"><span>Apraksts:</span></td></tr><tr>
-    <td style="background-color: yellow;" COLSPAN="4"><textarea rows="5" cols="70" name="ShopDescription" id="ShopDescription"></textarea></td>
-</tr>
-</table>
-
-                </div></form>
-            <div  style="height: 20px;"></div>
-        </div>
-    </div>
-</div>
-
 <div ID="DialogForm"></div>
 
 <div id="upload_dialog" title="Pievienot failus" align="center" style="display: none;">
@@ -524,14 +362,6 @@ $("form.SelectChange input:checkbox").change(function(){
 $(".add [name=PersonSelect]").autocomplete({
     source: "/lv/Josn/Persons",
     minLength: 2,
-});
-
-$(".add [name=TypeSelect]").autocomplete({
-    source: "/lv/Josn/Types",
-    select: function( event, ui){
-        AddNoliktavaForm(ui.item.ID);
-    },
-    minLength: 1,
 });
 
 $(".add [name=OrderSelect]").autocomplete({
